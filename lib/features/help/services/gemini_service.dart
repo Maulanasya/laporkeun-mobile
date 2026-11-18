@@ -15,8 +15,6 @@ class GeminiException implements Exception {
   String toString() => message;
 }
 
-/// Error sementara dari server (sibuk / model tidak tersedia / timeout):
-/// boleh dicoba dengan model berikutnya.
 class _RetryableException implements Exception {
   const _RetryableException();
 }
@@ -25,7 +23,7 @@ class _RetryableException implements Exception {
 class GeminiService {
   static const String _apiKey = geminiApiKey;
 
-  /// Dicoba berurutan. Jika satu model gagal sementara, pindah ke berikutnya.
+  /// Model AI
   static const List<String> _models = [
     'gemini-3.5-flash-lite',
     'gemini-3.6-flash',
@@ -140,7 +138,6 @@ Aturan:
       final m = recent[i];
       final parts = <Map<String, dynamic>>[];
       if (m.text.isNotEmpty) parts.add({'text': m.text});
-      // Gambar hanya disertakan untuk pesan-pesan terakhir agar request tetap ringan.
       if (m.imageBytes != null && i >= recent.length - 4) {
         parts.add({
           'inlineData': {
@@ -152,7 +149,6 @@ Aturan:
       if (parts.isEmpty) continue;
 
       final role = m.isUser ? 'user' : 'model';
-      // Percakapan harus dimulai dari giliran user.
       if (contents.isEmpty && role == 'model') continue;
       contents.add({'role': role, 'parts': parts});
     }
