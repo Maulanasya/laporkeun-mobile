@@ -12,6 +12,7 @@ class AppTextStyles {
     double height = 1.2,
   }) {
     return TextStyle(
+      inherit: true,
       fontSize: size,
       fontWeight: weight,
       color: color,
@@ -26,6 +27,7 @@ class AppTextStyles {
     double height = 1.5,
   }) {
     return TextStyle(
+      inherit: true,
       fontSize: size,
       fontWeight: weight,
       color: color,
@@ -38,7 +40,12 @@ class AppTextStyles {
     Color color = AppColors.ink,
     FontWeight weight = FontWeight.normal,
   }) {
-    return TextStyle(fontSize: size, fontWeight: weight, color: color);
+    return TextStyle(
+      inherit: true,
+      fontSize: size,
+      fontWeight: weight,
+      color: color,
+    );
   }
 
   static TextStyle text(
@@ -49,6 +56,7 @@ class AppTextStyles {
     double letterSpacing = 0,
   }) {
     return TextStyle(
+      inherit: true,
       fontSize: size,
       fontWeight: weight,
       color: color,

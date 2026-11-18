@@ -88,7 +88,11 @@ class Repo {
       final mime = mimeOf(f.name);
       await sb.storage
           .from('bukti')
-          .upload(path, File(f.path), fileOptions: FileOptions(contentType: mime));
+          .upload(
+            path,
+            File(f.path),
+            fileOptions: FileOptions(contentType: mime),
+          );
       await sb.from('report_evidence').insert({
         'report_id': reportId,
         'file_path': path,
@@ -99,23 +103,36 @@ class Repo {
 
   /// Laporan milik siswa yang sedang login (dibatasi RLS).
   static Future<List<Report>> myReports() async {
-    final d = await sb.from('reports').select().order('created_at', ascending: false);
+    final d = await sb
+        .from('reports')
+        .select()
+        .order('created_at', ascending: false);
     return d.map(Report.fromMap).toList();
   }
 
   /// Laporan untuk guru BK (semua) atau psikolog (yang dialihkan kepadanya).
   static Future<List<Report>> staffReports() async {
-    final d = await sb.from('staff_reports').select().order('created_at', ascending: false);
+    final d = await sb
+        .from('staff_reports')
+        .select()
+        .order('created_at', ascending: false);
     return d.map(Report.fromMap).toList();
   }
 
   static Future<Report> reportById(String id, {required bool staff}) async {
-    final d = await sb.from(staff ? 'staff_reports' : 'reports').select().eq('id', id).single();
+    final d = await sb
+        .from(staff ? 'staff_reports' : 'reports')
+        .select()
+        .eq('id', id)
+        .single();
     return Report.fromMap(d);
   }
 
   static Future<List<String>> evidenceUrls(String reportId) async {
-    final rows = await sb.from('report_evidence').select('file_path').eq('report_id', reportId);
+    final rows = await sb
+        .from('report_evidence')
+        .select('file_path')
+        .eq('report_id', reportId);
     final paths = rows.map((r) => r['file_path'] as String).toList();
     if (paths.isEmpty) return [];
     final signed = await sb.storage.from('bukti').createSignedUrls(paths, 3600);
@@ -132,12 +149,15 @@ class Repo {
   }
 
   // ---------- Tindak lanjut guru BK ----------
-  static Future<void> updateStatus(String reportId, String status, String? note) async {
-    await sb.rpc('update_report_status', params: {
-      'p_report': reportId,
-      'p_status': status,
-      'p_note': note,
-    });
+  static Future<void> updateStatus(
+    String reportId,
+    String status,
+    String? note,
+  ) async {
+    await sb.rpc(
+      'update_report_status',
+      params: {'p_report': reportId, 'p_status': status, 'p_note': note},
+    );
   }
 
   static Future<List<Map<String, dynamic>>> psychologists() async {
@@ -145,16 +165,26 @@ class Repo {
     return List<Map<String, dynamic>>.from(d as List);
   }
 
-  static Future<void> referToPsychologist(String reportId, String psychologistId, String? note) async {
-    await sb.rpc('refer_to_psychologist', params: {
-      'p_report': reportId,
-      'p_psychologist': psychologistId,
-      'p_note': note,
-    });
+  static Future<void> referToPsychologist(
+    String reportId,
+    String psychologistId,
+    String? note,
+  ) async {
+    await sb.rpc(
+      'refer_to_psychologist',
+      params: {
+        'p_report': reportId,
+        'p_psychologist': psychologistId,
+        'p_note': note,
+      },
+    );
   }
 
   // ---------- Konsultasi ----------
-  static Future<ConsultSession?> sessionFor(String reportId, String jenis) async {
+  static Future<ConsultSession?> sessionFor(
+    String reportId,
+    String jenis,
+  ) async {
     final r = await sb
         .from('consultation_sessions')
         .select()
@@ -173,12 +203,38 @@ class Repo {
   }
 
   static Future<void> sendMessage(String sessionId, String text) async {
-    await sb.from('messages').insert({'session_id': sessionId, 'isi_pesan': text});
+    await sb.from('messages').insert({
+      'session_id': sessionId,
+      'isi_pesan': text,
+    });
   }
 
   static Future<void> markRead(String sessionId) async {
     try {
       await sb.rpc('mark_messages_read', params: {'p_session': sessionId});
     } catch (_) {}
+  }
+
+  static Future<void> updateProfile({
+    required String nama,
+    String? nis,
+    String? noTelepon,
+  }) async {
+    final user = sb.auth.currentUser;
+
+    if (user == null) {
+      throw Exception('Pengguna belum login');
+    }
+
+    await sb
+        .from('profiles')
+        .update({
+          'nama': nama.trim(),
+          'nis': nis?.trim().isEmpty ?? true ? null : nis!.trim(),
+          'no_telepon': noTelepon?.trim().isEmpty ?? true
+              ? null
+              : noTelepon!.trim(),
+        })
+        .eq('id', user.id);
   }
 }
