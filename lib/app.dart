@@ -108,7 +108,6 @@ GoRouter buildRouter(AuthState auth) {
         ),
       ),
 
-      // Chat (semua peran; akses sesi dibatasi RLS)
       GoRoute(
         path: '/chat/:sid',
         builder: (c, s) => ChatScreen(
