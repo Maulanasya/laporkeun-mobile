@@ -8,10 +8,11 @@ import 'data/models.dart';
 import 'screens/article_admin_screens.dart';
 import 'screens/auth_screens.dart';
 import 'screens/chat_screen.dart';
-import 'screens/landing_screen.dart';
+import 'features/landing/screens/landing_screen.dart';
 import 'screens/report_detail_screen.dart';
 import 'screens/report_form_screen.dart';
 import 'screens/report_list_page.dart';
+import 'features/articles/screens/article_detail_screen.dart';
 
 class LaporKeunApp extends StatelessWidget {
   final GoRouter router;
@@ -38,10 +39,10 @@ GoRouter buildRouter(AuthState auth) {
       final pathRole = loc.startsWith('/siswa')
           ? 'siswa'
           : loc.startsWith('/bk')
-              ? 'guru_bk'
-              : loc.startsWith('/psikolog')
-                  ? 'psikolog'
-                  : null;
+          ? 'guru_bk'
+          : loc.startsWith('/psikolog')
+          ? 'psikolog'
+          : null;
 
       if (!auth.loggedIn) {
         return (pathRole != null || loc.startsWith('/chat')) ? '/login' : null;
@@ -61,19 +62,31 @@ GoRouter buildRouter(AuthState auth) {
 
       // Siswa
       GoRoute(path: '/siswa', builder: (c, s) => const StudentHome()),
-      GoRoute(path: '/siswa/lapor', builder: (c, s) => const ReportFormScreen()),
+      GoRoute(
+        path: '/siswa/lapor',
+        builder: (c, s) => const ReportFormScreen(),
+      ),
       GoRoute(
         path: '/siswa/laporan/:id',
-        builder: (c, s) => ReportDetailScreen(reportId: s.pathParameters['id']!, role: 'siswa'),
+        builder: (c, s) => ReportDetailScreen(
+          reportId: s.pathParameters['id']!,
+          role: 'siswa',
+        ),
       ),
 
       // Guru BK
       GoRoute(path: '/bk', builder: (c, s) => const BkHome()),
       GoRoute(
         path: '/bk/laporan/:id',
-        builder: (c, s) => ReportDetailScreen(reportId: s.pathParameters['id']!, role: 'guru_bk'),
+        builder: (c, s) => ReportDetailScreen(
+          reportId: s.pathParameters['id']!,
+          role: 'guru_bk',
+        ),
       ),
-      GoRoute(path: '/bk/artikel', builder: (c, s) => const ArticleManageScreen()),
+      GoRoute(
+        path: '/bk/artikel',
+        builder: (c, s) => const ArticleManageScreen(),
+      ),
       GoRoute(
         path: '/bk/artikel/form',
         builder: (c, s) => ArticleFormScreen(article: s.extra as Article?),
@@ -83,7 +96,10 @@ GoRouter buildRouter(AuthState auth) {
       GoRoute(path: '/psikolog', builder: (c, s) => const PsychologistHome()),
       GoRoute(
         path: '/psikolog/laporan/:id',
-        builder: (c, s) => ReportDetailScreen(reportId: s.pathParameters['id']!, role: 'psikolog'),
+        builder: (c, s) => ReportDetailScreen(
+          reportId: s.pathParameters['id']!,
+          role: 'psikolog',
+        ),
       ),
 
       // Chat (semua peran; akses sesi dibatasi RLS)

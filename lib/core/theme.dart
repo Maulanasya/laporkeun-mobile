@@ -1,9 +1,3 @@
-import 'package:flutter/material.dart';
-
-ThemeData buildTheme() {
-  return ThemeData(
-    useMaterial3: true,
-    colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2F6FED)),
-    inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder()),
-  );
-}
+export 'theme/app_colors.dart';
+export 'theme/app_text_styles.dart';
+export 'theme/app_theme.dart';
