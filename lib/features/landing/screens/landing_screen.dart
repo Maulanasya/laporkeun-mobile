@@ -9,6 +9,7 @@ import '../../../data/models.dart';
 import '../../../data/repository.dart';
 
 import '../../../shared/widgets/page_backdrop.dart';
+import '../../../shared/widgets/app_bottom_nav.dart';
 
 import '../widgets/search_hint.dart';
 import '../widgets/anonymous_card.dart';
@@ -21,7 +22,6 @@ import '../widgets/faq_section.dart';
 import '../widgets/cta_section.dart';
 import '../widgets/landing_footer.dart';
 import '../widgets/landing_hero.dart';
-import '../widgets/landing_bottom_nav.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -33,7 +33,6 @@ class LandingScreen extends StatefulWidget {
 class _LandingScreenState extends State<LandingScreen> {
   static const String _logoAssetPath = 'assets/images/logo.png';
 
-  /// Gambar cadangan apabila artikel dari backend tidak menyertakan URL cover.
   static const List<String> _fallbackCovers = [
     'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
     'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80',
@@ -45,12 +44,11 @@ class _LandingScreenState extends State<LandingScreen> {
   final TextEditingController _kodeController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  // Key referensi untuk navigasi gulir otomatis (smooth scroll) dari bottom bar
   final GlobalKey _edukasiKey = GlobalKey();
   final GlobalKey _bantuanKey = GlobalKey();
 
   bool _showAllArticles = false;
-  int _navIndex = 0;
+  int _navIndex = NavTab.home;
 
   @override
   void dispose() {
@@ -91,7 +89,6 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
-  /// Validasi input kode laporan dan arahkan pengguna sesuai status autentikasi.
   void _handleCekKodeLaporan() {
     final kode = _kodeController.text.trim();
     if (kode.isEmpty) {
@@ -112,7 +109,6 @@ class _LandingScreenState extends State<LandingScreen> {
     }
   }
 
-  /// Mengarahkan ke dashboard sesuai role jika sudah login, atau ke rute auth jika belum.
   void _navigateProtected(String loggedOutRoute) {
     if (auth.loggedIn) {
       context.go(homeFor(auth.role));
@@ -142,7 +138,6 @@ class _LandingScreenState extends State<LandingScreen> {
               onRefresh: _refresh,
               child: ListView(
                 controller: _scrollController,
-                // Beri ruang ekstra di bawah agar konten terakhir tidak tertutup floating bottom nav
                 padding: const EdgeInsets.only(bottom: 140),
                 children: [
                   LandingHero(
@@ -203,32 +198,18 @@ class _LandingScreenState extends State<LandingScreen> {
             ),
           ],
         ),
-        bottomNavigationBar: LandingBottomNav(
-          navIndex: _navIndex,
-          isLoggedIn: auth.loggedIn,
-          onHomeTap: () {
-            setState(() => _navIndex = 0);
-            _scrollController.animateTo(
-              0,
-              duration: const Duration(milliseconds: 450),
-              curve: Curves.easeOutCubic,
-            );
-          },
-          onEducationTap: () {
-            setState(() => _navIndex = 1);
-            _scrollToSection(_edukasiKey);
-          },
-          onHelpTap: () {
-            setState(() => _navIndex = 3);
-            _scrollToSection(_bantuanKey);
-          },
-          onProfileTap: () {
-            setState(() => _navIndex = 4);
-            _navigateProtected('/login');
-          },
-          onReportTap: () => _navigateProtected('/register'),
-        ),
-      ),
+        bottomNavigationBar: AppBottomNav(
+  currentIndex: _navIndex,
+  onHomeTap: () {
+    setState(() => _navIndex = NavTab.home);
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 450),
+      curve: Curves.easeOutCubic,
+    );
+  },
+),
+      )
     );
   }
 }

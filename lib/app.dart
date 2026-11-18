@@ -10,6 +10,8 @@ import 'features/auth/screens/login_screen.dart';
 import 'features/auth/screens/register_screen.dart';
 import 'screens/chat_screen.dart';
 import 'features/landing/screens/landing_screen.dart';
+import 'features/education/screens/education_screen.dart';
+import 'features/help/screens/help_screen.dart';
 import 'screens/report_detail_screen.dart';
 import 'screens/report_form_screen.dart';
 import 'screens/report_list_page.dart';
@@ -53,7 +55,10 @@ GoRouter buildRouter(AuthState auth) {
       return null;
     },
     routes: [
+      // Publik
       GoRoute(path: '/', builder: (c, s) => const LandingScreen()),
+      GoRoute(path: '/edukasi', builder: (c, s) => const EducationScreen()),
+      GoRoute(path: '/bantuan', builder: (c, s) => const HelpScreen()),
       GoRoute(
         path: '/artikel/:id',
         builder: (c, s) => ArticleDetailScreen(id: s.pathParameters['id']!),
