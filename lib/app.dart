@@ -7,7 +7,6 @@ import 'data/auth_state.dart';
 import 'data/models.dart';
 
 import 'screens/article_admin_screens.dart';
-import 'screens/chat_screen.dart';
 
 import 'features/landing/screens/landing_screen.dart';
 import 'features/education/screens/education_screen.dart';
@@ -23,6 +22,7 @@ import 'features/reports/pages/bk_report_page.dart';
 import 'features/reports/pages/psychologist_report_page.dart';
 import 'features/reports/screens/report_detail_screen.dart';
 import 'features/report/screens/report_form_screen.dart';
+import 'features/chat/screens/chat_screen.dart';
 
 class LaporKeunApp extends StatelessWidget {
   final GoRouter router;
