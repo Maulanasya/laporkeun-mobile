@@ -59,6 +59,14 @@ class AppBottomNav extends StatelessWidget {
     }
   }
 
+  void _goReport(BuildContext context) {
+    if (auth.loggedIn) {
+      context.push('/lapor');
+    } else {
+      context.push('/register');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
@@ -120,9 +128,7 @@ class AppBottomNav extends StatelessWidget {
                   Positioned(
                     top: 0,
                     child: GestureDetector(
-                      onTap:
-                          onReportTap ??
-                          () => _goProtected(context, '/register'),
+                      onTap: onReportTap ?? () => _goReport(context),
                       child: Container(
                         width: 62,
                         height: 62,
