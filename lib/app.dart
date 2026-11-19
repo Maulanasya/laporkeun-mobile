@@ -36,7 +36,7 @@ class LaporKeunApp extends StatelessWidget {
 
 GoRouter buildRouter(AuthState auth) {
   return GoRouter(
-    initialLocation: auth.loggedIn ? homeFor(auth.role) : '/',
+    initialLocation: '/',
     refreshListenable: auth,
     redirect: (context, state) {
       final loc = state.matchedLocation;
@@ -56,7 +56,7 @@ GoRouter buildRouter(AuthState auth) {
             ? '/login'
             : null;
       }
-      if (isAuthPage) return homeFor(auth.role);
+      if (isAuthPage) return '/';
       if (pathRole != null && pathRole != auth.role) return homeFor(auth.role);
       return null;
     },

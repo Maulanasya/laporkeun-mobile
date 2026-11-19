@@ -39,6 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       await auth.login(_email.text.trim(), _pass.text);
+
+      if (mounted) {
+        context.go('/');
+      }
     } catch (e) {
       if (mounted) {
         snack(context, errMsg(e));
