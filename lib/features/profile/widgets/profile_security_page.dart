@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'profile_page_header.dart';
-import 'profile_info_sections.dart';
 import 'profile_security_section.dart';
 
 class ProfileSecurityPage extends StatelessWidget {

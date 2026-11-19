@@ -16,8 +16,8 @@ class AuthGlass extends StatelessWidget {
     required this.child,
     this.padding = EdgeInsets.zero,
     this.radius = 24,
-    this.opacity = 0.52,
-    this.blur = 20,
+    this.opacity = 0.55,
+    this.blur = 14,
   });
 
   @override
@@ -31,26 +31,17 @@ class AuthGlass extends StatelessWidget {
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: opacity),
             borderRadius: borderRadius,
-            gradient: LinearGradient(
-              colors: [
-                Colors.white.withValues(
-                  alpha: (opacity + 0.12).clamp(0.0, 1.0),
-                ),
-                Colors.white.withValues(alpha: (opacity - 0.1).clamp(0.0, 1.0)),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
             border: Border.all(
               color: Colors.white.withValues(alpha: 0.85),
               width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.ink.withValues(alpha: 0.08),
-                blurRadius: 25,
-                offset: const Offset(0, 10),
+                color: AppColors.ink.withValues(alpha: 0.045),
+                blurRadius: 22,
+                offset: const Offset(0, 9),
               ),
             ],
           ),
