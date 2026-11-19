@@ -8,11 +8,13 @@ import 'data/models.dart';
 
 import 'screens/article_admin_screens.dart';
 import 'screens/chat_screen.dart';
-import 'screens/report_form_screen.dart';
+
+import 'features/landing/screens/landing_screen.dart';
+import 'features/education/screens/education_screen.dart';
+import 'features/help/screens/help_screen.dart';
 
 import 'features/auth/screens/login_screen.dart';
 import 'features/auth/screens/register_screen.dart';
-import 'features/landing/screens/landing_screen.dart';
 import 'features/articles/screens/article_detail_screen.dart';
 import 'features/profile/screens/profile_screen.dart';
 import 'features/profile/screens/edit_profile_screen.dart';
@@ -20,6 +22,7 @@ import 'features/reports/pages/student_report_page.dart';
 import 'features/reports/pages/bk_report_page.dart';
 import 'features/reports/pages/psychologist_report_page.dart';
 import 'features/reports/screens/report_detail_screen.dart';
+import 'features/report/screens/report_form_screen.dart';
 
 class LaporKeunApp extends StatelessWidget {
   final GoRouter router;
@@ -63,7 +66,11 @@ GoRouter buildRouter(AuthState auth) {
       return null;
     },
     routes: [
+      // Publik
       GoRoute(path: '/', builder: (c, s) => const LandingScreen()),
+      GoRoute(path: '/edukasi', builder: (c, s) => const EducationScreen()),
+      GoRoute(path: '/bantuan', builder: (c, s) => const HelpScreen()),
+      GoRoute(path: '/lapor', builder: (c, s) => const ReportFormScreen()),
       GoRoute(
         path: '/artikel/:id',
         builder: (c, s) => ArticleDetailScreen(id: s.pathParameters['id']!),
@@ -124,7 +131,6 @@ GoRouter buildRouter(AuthState auth) {
         ),
       ),
 
-      // Chat (semua peran; akses sesi dibatasi RLS)
       GoRoute(
         path: '/chat/:sid',
         builder: (c, s) => ChatScreen(

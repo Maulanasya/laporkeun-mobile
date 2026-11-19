@@ -6,6 +6,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../data/auth_state.dart';
 import '../../../data/repository.dart';
+import '../../../shared/widgets/app_bottom_nav.dart';
 
 import '../widgets/profile_decorations.dart';
 import '../widgets/change_password_dialog.dart';
@@ -310,6 +311,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return Scaffold(
           backgroundColor: AppColors.landingBackground,
           body: SafeArea(child: _buildBackground(page)),
+          bottomNavigationBar: const AppBottomNav(currentIndex: NavTab.profile),
         );
       },
     );
