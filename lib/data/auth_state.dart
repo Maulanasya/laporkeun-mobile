@@ -24,7 +24,11 @@ class AuthState extends ChangeNotifier {
       return;
     }
     try {
-      final row = await sb.from('profiles').select().eq('id', user.id).maybeSingle();
+      final row = await sb
+          .from('profiles')
+          .select()
+          .eq('id', user.id)
+          .maybeSingle();
       profile = row == null ? null : Profile.fromMap(row);
     } catch (_) {
       profile = null;
@@ -53,6 +57,11 @@ class AuthState extends ChangeNotifier {
     await _loadProfile();
     notifyListeners();
     return true;
+  }
+
+  Future<void> refreshProfile() async {
+    await _loadProfile();
+    notifyListeners();
   }
 
   Future<void> logout() async {

@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
-import '../../core/utils.dart';
 import '../../data/auth_state.dart';
 import 'glass_container.dart';
 import 'nav_item.dart';
@@ -51,11 +50,12 @@ class AppBottomNav extends StatelessWidget {
     context.go('/bantuan');
   }
 
-  void _goProtected(BuildContext context, String loggedOutRoute) {
+  void _goProfile(BuildContext context) {
     if (auth.loggedIn) {
-      context.go(homeFor(auth.role));
+      if (currentIndex == NavTab.profile) return;
+      context.go('/profile');
     } else {
-      context.push(loggedOutRoute);
+      context.push('/login');
     }
   }
 
@@ -117,9 +117,7 @@ class AppBottomNav extends StatelessWidget {
                             icon: Icons.person_outline_rounded,
                             label: isLoggedIn ? 'Profil' : 'Masuk',
                             active: currentIndex == NavTab.profile,
-                            onTap:
-                                onProfileTap ??
-                                () => _goProtected(context, '/login'),
+                            onTap: onProfileTap ?? () => _goProfile(context),
                           ),
                         ],
                       ),

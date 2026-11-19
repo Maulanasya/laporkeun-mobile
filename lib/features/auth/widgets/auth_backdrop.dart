@@ -1,47 +1,35 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
+import '../../profile/widgets/profile_decorations.dart';
 
 class AuthBackdrop extends StatelessWidget {
   const AuthBackdrop({super.key});
 
-  Widget _glow(Alignment center, Color color) {
-    return Positioned.fill(
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: RadialGradient(
-            center: center,
-            radius: 0.9,
-            colors: [color, color.withValues(alpha: 0)],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
+      fit: StackFit.expand,
       children: [
-        const Positioned.fill(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFFEFECFA),
-                  Color(0xFFE3EFF3),
-                  Color(0xFFFBEEE4),
-                ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
+        const ColoredBox(color: AppColors.landingBackground),
+
+        Positioned(
+          top: -65,
+          right: -65,
+          child: ProfileDecorationCircle(
+            size: 190,
+            color: AppColors.primary.withValues(alpha: 0.13),
           ),
         ),
-        _glow(Alignment.topRight, AppColors.lavender.withValues(alpha: 0.8)),
-        _glow(Alignment.centerLeft, AppColors.mint.withValues(alpha: 0.65)),
-        _glow(Alignment.bottomRight, AppColors.peach.withValues(alpha: 0.75)),
-        _glow(Alignment.bottomLeft, AppColors.pink.withValues(alpha: 0.55)),
+
+        Positioned(
+          top: 350,
+          left: -90,
+          child: ProfileDecorationCircle(
+            size: 160,
+            color: AppColors.mint.withValues(alpha: 0.4),
+          ),
+        ),
       ],
     );
   }

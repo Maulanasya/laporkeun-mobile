@@ -144,7 +144,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     isLoggedIn: auth.loggedIn,
                     logoAssetPath: _logoAssetPath,
                     kodeController: _kodeController,
-                    onProfileTap: () => context.go(homeFor(auth.role)),
+                    onProfileTap: () => context.push('/profile'),
                     onLoginTap: () => context.push('/login'),
                     onCheckCode: _handleCekKodeLaporan,
                   ),

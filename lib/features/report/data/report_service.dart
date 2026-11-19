@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/report_draft.dart';
@@ -18,7 +19,6 @@ class ReportSubmitResult {
   const ReportSubmitResult({required this.code, this.failedEvidence = 0});
 
   final String code;
-
   final int failedEvidence;
 }
 
@@ -46,20 +46,25 @@ class ReportService {
             .insert({
               'kode_laporan': code,
               'reporter_id': user.id,
-              'kategori': draft.category.name,
+              'kategori': _dbCategory(draft.category),
               'lokasi': draft.location,
               'waktu_kejadian': draft.occurredAt.toUtc().toIso8601String(),
               'kronologi': draft.chronology,
               'tampilkan_nama': draft.identity == IdentityChoice.nama,
             })
-            .select('id')
+            .select('id, kode_laporan')
             .single();
         reportId = row['id'] as String;
+        if (row['kode_laporan'] != null) {
+          code = row['kode_laporan'] as String;
+        }
       } on PostgrestException catch (e) {
+        debugPrint('POSTGREST ERROR (${e.code}): ${e.message} | ${e.details}');
         if (e.code == '23505' && attempt < 4) continue;
-        throw const ReportException(
-          'Laporan belum terkirim. Periksa koneksi lalu coba lagi.',
-        );
+        throw ReportException('DB Error (${e.code}): ${e.message}');
+      } catch (e) {
+        debugPrint('SUBMIT ERROR: $e');
+        throw ReportException('Gagal mengirim: $e');
       }
     }
     if (reportId == null) {
@@ -86,12 +91,29 @@ class ReportService {
           'file_path': path,
           'tipe_file': mime,
         });
-      } catch (_) {
+      } catch (e) {
+        debugPrint('EVIDENCE UPLOAD ERROR: $e');
         failed++;
       }
     }
 
     return ReportSubmitResult(code: code, failedEvidence: failed);
+  }
+
+  static String _dbCategory(ReportCategory category) {
+    switch (category.name) {
+      case 'verbal':
+        return 'kekerasan_verbal';
+      case 'fisik':
+        return 'kekerasan_fisik';
+      case 'sosial':
+        return 'kekerasan_sosial';
+      case 'siber':
+      case 'cyber':
+        return 'cyberbullying';
+      default:
+        return category.name;
+    }
   }
 
   static String _generateCode() {
