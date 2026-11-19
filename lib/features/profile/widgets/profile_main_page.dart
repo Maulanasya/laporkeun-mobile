@@ -18,6 +18,7 @@ class ProfileMainPage extends StatelessWidget {
   final VoidCallback onInformation;
   final VoidCallback onSecurity;
   final VoidCallback onLogout;
+  final VoidCallback onRoleMenu;
 
   final Widget footer;
 
@@ -34,6 +35,7 @@ class ProfileMainPage extends StatelessWidget {
     required this.onSecurity,
     required this.onLogout,
     required this.footer,
+    required this.onRoleMenu,
   });
 
   @override
@@ -91,7 +93,41 @@ class ProfileMainPage extends StatelessWidget {
           nis: nis,
           onEdit: onEdit,
         ),
+
         const SizedBox(height: 28),
+
+        Text(
+          'MENU LAYANAN',
+          style: AppTextStyles.text(
+            11,
+            weight: FontWeight.w800,
+            color: AppColors.primaryDark,
+            letterSpacing: 1.5,
+          ),
+        ),
+        const SizedBox(height: 12),
+
+        ProfileSettingMenuCard(
+          icon: role.toLowerCase() == 'siswa'
+              ? Icons.history_rounded
+              : role.toLowerCase() == 'bk'
+              ? Icons.inbox_outlined
+              : Icons.people_outline_rounded,
+          iconColor: AppColors.primaryDark,
+          iconBackground: AppColors.mint,
+          title: role.toLowerCase() == 'siswa'
+              ? 'Riwayat Laporan'
+              : role.toLowerCase() == 'bk'
+              ? 'Laporan Masuk'
+              : 'Siswa Dialihkan',
+          subtitle: role.toLowerCase() == 'siswa'
+              ? 'Lihat perkembangan laporan yang kamu buat'
+              : role.toLowerCase() == 'bk'
+              ? 'Kelola laporan yang masuk'
+              : 'Lihat siswa yang dialihkan kepada Anda',
+          onTap: onRoleMenu,
+        ),
+
         const SizedBox(height: 14),
         ProfileSettingMenuCard(
           icon: Icons.person_outline_rounded,

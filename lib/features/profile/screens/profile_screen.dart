@@ -139,6 +139,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onInformation: () => _openPage(ProfilePage.information),
       onSecurity: () => _openPage(ProfilePage.security),
       onLogout: () => _logout(context),
+      onRoleMenu: () {
+        switch (profile.role.toLowerCase()) {
+          case 'siswa':
+            context.push('/siswa');
+            break;
+          case 'guru_bk':
+            context.push('/bk');
+            break;
+          case 'psikolog':
+            context.push('/psikolog');
+            break;
+        }
+      },
       footer: _footer(),
     );
   }
