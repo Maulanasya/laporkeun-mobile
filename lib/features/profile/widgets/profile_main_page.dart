@@ -92,10 +92,6 @@ class ProfileMainPage extends StatelessWidget {
           onEdit: onEdit,
         ),
         const SizedBox(height: 28),
-        const ProfileSectionTitle(
-          title: 'Menu pengaturan',
-          subtitle: 'Informasi dan perlindungan akun',
-        ),
         const SizedBox(height: 14),
         ProfileSettingMenuCard(
           icon: Icons.person_outline_rounded,

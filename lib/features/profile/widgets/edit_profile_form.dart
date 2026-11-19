@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../../../core/theme/app_colors.dart';
@@ -28,7 +30,7 @@ class EditProfileForm extends StatelessWidget {
       ),
       prefixIcon: Icon(icon, color: AppColors.primary, size: 20),
       filled: true,
-      fillColor: AppColors.landingBackground.withValues(alpha: 0.48),
+      fillColor: Colors.white.withValues(alpha: 0.48),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 17),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -96,88 +98,112 @@ class EditProfileForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildField(
-          label: 'Nama lengkap',
-          hint: 'Masukkan nama lengkap',
-          icon: Icons.person_outline_rounded,
-          controller: namaController,
-          textCapitalization: TextCapitalization.words,
-          validator: (value) {
-            if (value == null || value.trim().isEmpty) {
-              return 'Nama lengkap wajib diisi';
-            }
-            return null;
-          },
-        ),
-
-        const SizedBox(height: 20),
-
-        _buildField(
-          label: 'NISN',
-          hint: 'Masukkan NISN',
-          icon: Icons.badge_outlined,
-          controller: nisController,
-          keyboardType: TextInputType.number,
-        ),
-
-        const SizedBox(height: 20),
-
-        _buildField(
-          label: 'Nomor telepon',
-          hint: 'Masukkan nomor telepon',
-          icon: Icons.phone_outlined,
-          controller: teleponController,
-          keyboardType: TextInputType.phone,
-        ),
-
-        const SizedBox(height: 28),
-
-        // Tombol simpan
-        SizedBox(
-          height: 53,
-          child: ElevatedButton(
-            onPressed: isLoading ? null : onSave,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              disabledBackgroundColor: AppColors.primary.withValues(
-                alpha: 0.55,
-              ),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.55),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.85),
+              width: 1.2,
             ),
-            child: isLoading
-                ? const SizedBox(
-                    width: 21,
-                    height: 21,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.ink.withValues(alpha: 0.045),
+                blurRadius: 22,
+                offset: const Offset(0, 9),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildField(
+                label: 'Nama lengkap',
+                hint: 'Masukkan nama lengkap',
+                icon: Icons.person_outline_rounded,
+                controller: namaController,
+                textCapitalization: TextCapitalization.words,
+                validator: (value) {
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Nama lengkap wajib diisi';
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 20),
+
+              _buildField(
+                label: 'NISN',
+                hint: 'Masukkan NISN',
+                icon: Icons.badge_outlined,
+                controller: nisController,
+                keyboardType: TextInputType.number,
+              ),
+
+              const SizedBox(height: 20),
+
+              _buildField(
+                label: 'Nomor telepon',
+                hint: 'Masukkan nomor telepon',
+                icon: Icons.phone_outlined,
+                controller: teleponController,
+                keyboardType: TextInputType.phone,
+              ),
+
+              const SizedBox(height: 28),
+
+              SizedBox(
+                height: 53,
+                child: ElevatedButton(
+                  onPressed: isLoading ? null : onSave,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    disabledBackgroundColor: AppColors.primary.withValues(
+                      alpha: 0.55,
                     ),
-                  )
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.save_outlined, size: 19),
-                      const SizedBox(width: 9),
-                      Text(
-                        'Simpan perubahan',
-                        style: AppTextStyles.text(
-                          13,
-                          weight: FontWeight.w800,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 21,
+                          height: 21,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.save_outlined, size: 19),
+                            const SizedBox(width: 9),
+                            Text(
+                              'Simpan perubahan',
+                              style: AppTextStyles.text(
+                                13,
+                                weight: FontWeight.w800,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

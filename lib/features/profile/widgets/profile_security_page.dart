@@ -27,10 +27,6 @@ class ProfileSecurityPage extends StatelessWidget {
           onBack: onBack,
         ),
         const SizedBox(height: 28),
-        const ProfileSectionTitle(
-          title: 'Perlindungan akun',
-          subtitle: 'Informasi keamanan dan privasi pengguna',
-        ),
         const SizedBox(height: 14),
         ProfileSecuritySection(onChangePassword: onChangePassword),
         const SizedBox(height: 25),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -189,43 +191,50 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   const SizedBox(height: 14),
 
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(19),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.88),
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.ink.withValues(alpha: 0.035),
-                          blurRadius: 18,
-                          offset: const Offset(0, 7),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        _AccountInfoRow(
-                          icon: Icons.email_outlined,
-                          label: 'Alamat email',
-                          value: email,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          child: Divider(
-                            height: 1,
-                            color: AppColors.ink.withValues(alpha: 0.08),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(24),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                      child: Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(19),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.55),
+                          borderRadius: BorderRadius.circular(24),
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.85),
+                            width: 1.2,
                           ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.ink.withValues(alpha: 0.045),
+                              blurRadius: 22,
+                              offset: const Offset(0, 9),
+                            ),
+                          ],
                         ),
-                        _AccountInfoRow(
-                          icon: Icons.groups_outlined,
-                          label: 'Peran akun',
-                          value: _formatRole(profile?.role),
+                        child: Column(
+                          children: [
+                            _AccountInfoRow(
+                              icon: Icons.email_outlined,
+                              label: 'Alamat email',
+                              value: email,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              child: Divider(
+                                height: 1,
+                                color: AppColors.ink.withValues(alpha: 0.08),
+                              ),
+                            ),
+                            _AccountInfoRow(
+                              icon: Icons.groups_outlined,
+                              label: 'Peran akun',
+                              value: _formatRole(profile?.role),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
 
@@ -238,32 +247,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   const SizedBox(height: 14),
 
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(19),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.9),
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.95),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.ink.withValues(alpha: 0.035),
-                          blurRadius: 18,
-                          offset: const Offset(0, 7),
-                        ),
-                      ],
-                    ),
-                    child: Form(
-                      key: _formKey,
-                      child: EditProfileForm(
-                        namaController: _namaController,
-                        nisController: _nisController,
-                        teleponController: _teleponController,
-                        isLoading: _isLoading,
-                        onSave: _saveProfile,
-                      ),
+                  Form(
+                    key: _formKey,
+                    child: EditProfileForm(
+                      namaController: _namaController,
+                      nisController: _nisController,
+                      teleponController: _teleponController,
+                      isLoading: _isLoading,
+                      onSave: _saveProfile,
                     ),
                   ),
 

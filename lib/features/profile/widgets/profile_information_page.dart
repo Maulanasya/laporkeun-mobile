@@ -41,10 +41,6 @@ class ProfileInformationPage extends StatelessWidget {
           onBack: onBack,
         ),
         const SizedBox(height: 28),
-        const ProfileSectionTitle(
-          title: 'Rincian informasi akun',
-          subtitle: 'Data pribadi dan identitas akun Anda',
-        ),
         const SizedBox(height: 14),
         ProfileInfoCard(
           items: [
